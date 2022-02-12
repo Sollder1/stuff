@@ -55,7 +55,7 @@ public class Main {
 
         JsonParser parser = new JsonParser();
 
-        parser.readTree(testJson);
+        parser.readTree(testJson2);
         var tree = parser.readTree(testJson2);
 
         var res = parser.writeTree(tree);

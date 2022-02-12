@@ -15,9 +15,11 @@ public class JsonParser {
         return Tokenizer.serialize(new TreeTokenizer(tree, false).getTokens());
     }
 
+    //Warning: does ot really look that pretty...
     public String writeTreePretty(JsonNode tree) {
         return Tokenizer.serialize(new TreeTokenizer(tree, true).getTokens());
     }
+
 
 
 }

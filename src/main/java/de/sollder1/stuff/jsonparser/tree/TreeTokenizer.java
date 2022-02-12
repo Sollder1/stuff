@@ -10,7 +10,6 @@ import de.sollder1.stuff.jsonparser.tree.nodes.terminal.BooleanNode;
 import de.sollder1.stuff.jsonparser.tree.nodes.terminal.NullNode;
 import de.sollder1.stuff.jsonparser.tree.nodes.terminal.NumericNode;
 import de.sollder1.stuff.jsonparser.tree.nodes.terminal.StringNode;
-import org.w3c.dom.Node;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class TreeTokenizer {
     private List<Token> outputTokens;
     private final JsonNode inputTree;
     private final boolean pretty;
-    private int intendationLevel = 0;
+    private int indentationLevel = 0;
 
     public TreeTokenizer(JsonNode inputTree, boolean pretty) {
         this.inputTree = inputTree;
@@ -52,51 +51,52 @@ public class TreeTokenizer {
     }
 
     private void buildArrayTokens(ArrayNode arrayNode) {
-        outputTokens.add(new Token(TokenType.SQUARE_BRACKET_START));
-        intendationLevel++;
+        addTokenWithPrettySupport(new Token(TokenType.SQUARE_BRACKET_START), true, false);
+        indentationLevel++;
         for (int i = 0; i < arrayNode.getChildren().size(); i++) {
             buildTokenList(arrayNode.getChildren().get(i));
             if (i < arrayNode.getChildren().size() - 1) {
-                outputTokens.add(new Token(TokenType.COMMA));
+                addTokenWithPrettySupport(new Token(TokenType.COMMA), true, false);
+            } else {
+                addTokenWithPrettySupport(null, true, true);
             }
         }
-        outputTokens.add(new Token(TokenType.SQUARE_BRACKET_END));
-        intendationLevel--;
+        indentationLevel--;
+        addTokenWithPrettySupport(new Token(TokenType.SQUARE_BRACKET_END), false, true);
     }
 
     private void buildObjectTokens(ObjectNode objectNode) {
-        outputTokens.add(new Token(TokenType.BRACE_START));
-        intendationLevel++;
+        addTokenWithPrettySupport(new Token(TokenType.BRACE_START), true, true);
+        indentationLevel++;
         for (int i = 0; i < objectNode.getChildren().size(); i++) {
             buildTokenList(objectNode.getChildren().get(i));
             if (i < objectNode.getChildren().size() - 1) {
-                outputTokens.add(new Token(TokenType.COMMA));
+                addTokenWithPrettySupport(new Token(TokenType.COMMA), true, false);
+            } else {
+                addTokenWithPrettySupport(null, true, true);
             }
         }
-        outputTokens.add(new Token(TokenType.BRACE_END));
-        intendationLevel--;
+        indentationLevel--;
+        addTokenWithPrettySupport(new Token(TokenType.BRACE_END), false, true);
     }
 
     private void buildKeyValueTokens(KeyValueNode keyValueNode) {
-        outputTokens.add(new Token(TokenType.STRING_LITERAL, keyValueNode.getIdentifier()));
+        addTokenWithPrettySupport(new Token(TokenType.STRING_LITERAL, keyValueNode.getIdentifier()), false, true);
         outputTokens.add(new Token(TokenType.COLON));
         buildTokenList(keyValueNode.getChildren().get(0));
     }
 
-    private void addTokenWithPrettySupport(TokenType type) {
-        addTokenWithPrettySupport(type, null);
-    }
+    private void addTokenWithPrettySupport(Token token, boolean newLine, boolean indentation) {
 
-
-    private void addTokenWithPrettySupport(TokenType type, String rawValue) {
-
-        if (pretty) {
-            for (int i = 0; i < intendationLevel; i++) {
+        if (pretty && indentation) {
+            for (int i = 0; i < indentationLevel; i++) {
                 outputTokens.add(new Token(TokenType.INDENTATION));
             }
         }
-        outputTokens.add(new Token(type, rawValue));
-        if (pretty) {
+        if (token != null) {
+            outputTokens.add(token);
+        }
+        if (pretty && newLine) {
             outputTokens.add(new Token(TokenType.NEW_LINE));
         }
     }

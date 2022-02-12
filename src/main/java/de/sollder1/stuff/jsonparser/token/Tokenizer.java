@@ -195,6 +195,8 @@ public class Tokenizer {
                 case COMMA -> json.append(",");
                 case NUMBER_LITERAL -> json.append(token.getRawValue());
                 case STRING_LITERAL -> json.append("\"").append(token.getRawValue()).append("\"");
+                case NEW_LINE -> json.append("\n");
+                case INDENTATION -> json.append("\t");
             }
         }
 
