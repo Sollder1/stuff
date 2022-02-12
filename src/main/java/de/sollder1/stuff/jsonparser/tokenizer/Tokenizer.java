@@ -6,18 +6,26 @@ import java.util.List;
 public class Tokenizer {
 
     private final String inputString;
-    private final List<Token> tokens;
+    private List<Token> tokens;
     private int index;
 
     public Tokenizer(String inputString) {
         this.inputString = inputString;
-        this.tokens = new LinkedList<>();
         this.index = 0;
     }
 
 
-    public List<Token> tokenize() {
+    public List<Token> getTokens() {
+        //Only actually tokenize once
+        if (tokens == null) {
+            this.tokens = new LinkedList<>();
+            tokenizeInternal();
+        }
 
+        return tokens;
+    }
+
+    private void tokenizeInternal() {
         while (index < inputString.length()) {
             if (isWhiteSpace()) {
                 index++;
@@ -38,8 +46,6 @@ public class Tokenizer {
             }
             throw TokenizerException.create(inputString, index);
         }
-
-        return tokens;
     }
 
     private boolean isWhiteSpace() {

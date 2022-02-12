@@ -2,10 +2,12 @@ package de.sollder1.stuff;
 
 
 import de.sollder1.stuff.jsonparser.tokenizer.Tokenizer;
+import de.sollder1.stuff.jsonparser.treebuilder.TreeBuilder;
 
 public class Main {
 
     public static void main(String[] args) {
+
 
         String testJson = """
                 [{"id":"53590461-f322-4777-a724-299be1225a1f","createdBy":null,"lastUpdatedBy"
@@ -26,10 +28,32 @@ public class Main {
                 "createdAt":1641159252436,"lastUpdatedAt":1641159252436,"name":"Gehalt"}]
                 """;
 
-        Tokenizer tokenizer = new Tokenizer(testJson);
-        tokenizer.tokenize();
-        tokenizer.print();
+        String testJson2 = """
+                {
+                  "status": {
+                    "code": 200,
+                    "description": "User retrieved successfully."
+                  },
+                  "payload": {
+                    "user": {
+                      "firstName": "Joe",
+                      "lastName": "Doe",
+                      "role": 3,
+                      "email": "doe@example.com",
+                      "customerID": "",
+                      "projects": [
+                      "6IXG5mEg6QLl9rhVSE6m",
+                      "Hs1bHiOIqKclwwis3CNf",
+                      "8C2OUGVZXU35FA7iwRn4"
+                      ],
+                      "status": "Status",
+                      "id": "c1BSZnKLdHSRYqrU5hqiQo733j13"
+                    }
+                  }
+                }
+                """;
 
+        new TreeBuilder(new Tokenizer(testJson2).getTokens()).getTree();
     }
 
 }

@@ -4,7 +4,7 @@ public class Token {
 
     //Welche Token gibt es?
 
-    private TokenType type;
+    private final TokenType type;
     private String rawValue;
 
     public Token(TokenType type, String rawValue) {
