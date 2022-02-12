@@ -1,8 +1,8 @@
 package de.sollder1.stuff;
 
 
-import de.sollder1.stuff.jsonparser.tokenizer.Tokenizer;
-import de.sollder1.stuff.jsonparser.treebuilder.TreeBuilder;
+import de.sollder1.stuff.jsonparser.JsonParser;
+import de.sollder1.stuff.jsonparser.token.Tokenizer;
 
 public class Main {
 
@@ -53,7 +53,18 @@ public class Main {
                 }
                 """;
 
-        new TreeBuilder(new Tokenizer(testJson2).getTokens()).getTree();
+        JsonParser parser = new JsonParser();
+
+        parser.readTree(testJson);
+        var tree = parser.readTree(testJson2);
+
+        var res = parser.writeTree(tree);
+
+        System.out.println(res);
+
+        parser.readTree(res);
+
+
     }
 
 }

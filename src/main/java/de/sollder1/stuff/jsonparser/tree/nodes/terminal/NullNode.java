@@ -1,4 +1,4 @@
-package de.sollder1.stuff.jsonparser.treebuilder.nodes.terminal;
+package de.sollder1.stuff.jsonparser.tree.nodes.terminal;
 
 public class NullNode extends TerminalNode {
 

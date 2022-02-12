@@ -1,14 +1,14 @@
-package de.sollder1.stuff.jsonparser.treebuilder.nodes.nonterminal;
+package de.sollder1.stuff.jsonparser.tree.nodes.nonterminal;
 
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.Node;
+import de.sollder1.stuff.jsonparser.tree.nodes.JsonNode;
 
 import java.util.Collections;
 
-public class KeyValueNode extends Node {
+public class KeyValueNode extends JsonNode {
 
     private final String identifier;
 
-    public KeyValueNode(String identifier, Node value) {
+    public KeyValueNode(String identifier, JsonNode value) {
         super(Collections.singletonList(value));
         this.identifier = identifier;
     }

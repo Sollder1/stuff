@@ -1,6 +1,6 @@
-package de.sollder1.stuff.jsonparser.treebuilder.exceptions;
+package de.sollder1.stuff.jsonparser.tree.exceptions;
 
-import de.sollder1.stuff.jsonparser.tokenizer.Token;
+import de.sollder1.stuff.jsonparser.token.Token;
 
 public class TreeBuilderException extends RuntimeException {
 

@@ -1,16 +1,16 @@
-package de.sollder1.stuff.jsonparser.treebuilder;
+package de.sollder1.stuff.jsonparser.tree;
 
-import de.sollder1.stuff.jsonparser.tokenizer.Token;
-import de.sollder1.stuff.jsonparser.tokenizer.TokenType;
-import de.sollder1.stuff.jsonparser.treebuilder.exceptions.TreeBuilderException;
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.Node;
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.nonterminal.ArrayNode;
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.nonterminal.KeyValueNode;
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.nonterminal.ObjectNode;
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.terminal.BooleanNode;
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.terminal.NullNode;
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.terminal.NumericNode;
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.terminal.StringNode;
+import de.sollder1.stuff.jsonparser.token.Token;
+import de.sollder1.stuff.jsonparser.token.TokenType;
+import de.sollder1.stuff.jsonparser.tree.exceptions.TreeBuilderException;
+import de.sollder1.stuff.jsonparser.tree.nodes.JsonNode;
+import de.sollder1.stuff.jsonparser.tree.nodes.nonterminal.ArrayNode;
+import de.sollder1.stuff.jsonparser.tree.nodes.nonterminal.KeyValueNode;
+import de.sollder1.stuff.jsonparser.tree.nodes.nonterminal.ObjectNode;
+import de.sollder1.stuff.jsonparser.tree.nodes.terminal.BooleanNode;
+import de.sollder1.stuff.jsonparser.tree.nodes.terminal.NullNode;
+import de.sollder1.stuff.jsonparser.tree.nodes.terminal.NumericNode;
+import de.sollder1.stuff.jsonparser.tree.nodes.terminal.StringNode;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,13 +19,13 @@ public class TreeBuilder {
 
     private final List<Token> inputTokens;
     private int tokenIndex;
-    private Node tree;
+    private JsonNode tree;
 
     public TreeBuilder(List<Token> inputTokens) {
         this.inputTokens = inputTokens;
     }
 
-    public Node getTree() {
+    public JsonNode getTree() {
         //Only actually build once
         if (tree == null) {
             if (inputTokens.size() == 0) {
@@ -37,7 +37,7 @@ public class TreeBuilder {
         return tree;
     }
 
-    private Node buildTree() {
+    private JsonNode buildTree() {
         switch (currentToken().getType()) {
             case NULL:
                 tokenIndex++;
@@ -83,10 +83,10 @@ public class TreeBuilder {
     }
 
     private ArrayNode createArrayNode() {
-        List<Node> childNodes = new LinkedList<>();
+        List<JsonNode> childNodes = new LinkedList<>();
         this.tokenIndex++;
         while (tokenIndex < inputTokens.size()) {
-            Node arrayToken = buildTree();
+            JsonNode arrayToken = buildTree();
             childNodes.add(arrayToken);
             if (currentToken().getType() == TokenType.SQUARE_BRACKET_END) {
                 this.tokenIndex++;
@@ -102,7 +102,7 @@ public class TreeBuilder {
 
     private KeyValueNode createKeyValueNode() {
         String name;
-        Node value;
+        JsonNode value;
 
         if (currentToken().getType() == TokenType.STRING_LITERAL) {
             name = currentToken().getRawValue();
@@ -124,5 +124,7 @@ public class TreeBuilder {
     private Token currentToken() {
         return inputTokens.get(tokenIndex);
     }
+
+
 
 }

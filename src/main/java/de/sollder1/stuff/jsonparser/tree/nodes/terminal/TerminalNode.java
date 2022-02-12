@@ -1,8 +1,8 @@
-package de.sollder1.stuff.jsonparser.treebuilder.nodes.terminal;
+package de.sollder1.stuff.jsonparser.tree.nodes.terminal;
 
-import de.sollder1.stuff.jsonparser.treebuilder.nodes.Node;
+import de.sollder1.stuff.jsonparser.tree.nodes.JsonNode;
 
-public class TerminalNode extends Node {
+public class TerminalNode extends JsonNode {
 
     private final String rawValue;
 

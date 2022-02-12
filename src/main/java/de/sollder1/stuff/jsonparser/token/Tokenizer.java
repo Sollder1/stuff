@@ -1,4 +1,4 @@
-package de.sollder1.stuff.jsonparser.tokenizer;
+package de.sollder1.stuff.jsonparser.token;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -175,7 +175,34 @@ public class Tokenizer {
         return (charAt >= '0' && charAt <= '9');
     }
 
-    public void print() {
+    //TODO: shall we let that here or move it...?!=
+
+    public static String serialize(List<Token> tokens) {
+
+        StringBuilder json = new StringBuilder();
+
+        for (Token token : tokens) {
+
+            switch (token.getType()) {
+                case TRUE -> json.append("true");
+                case FALSE -> json.append("false");
+                case NULL -> json.append("null");
+                case SQUARE_BRACKET_START -> json.append("[");
+                case SQUARE_BRACKET_END -> json.append("]");
+                case BRACE_START -> json.append("{");
+                case BRACE_END -> json.append("}");
+                case COLON -> json.append(":");
+                case COMMA -> json.append(",");
+                case NUMBER_LITERAL -> json.append(token.getRawValue());
+                case STRING_LITERAL -> json.append("\"").append(token.getRawValue()).append("\"");
+            }
+        }
+
+        return json.toString();
+    }
+
+    public void printTokens() {
         this.tokens.forEach(System.out::println);
     }
+
 }

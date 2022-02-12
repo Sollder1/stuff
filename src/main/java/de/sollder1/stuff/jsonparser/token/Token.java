@@ -1,4 +1,4 @@
-package de.sollder1.stuff.jsonparser.tokenizer;
+package de.sollder1.stuff.jsonparser.token;
 
 public class Token {
 
